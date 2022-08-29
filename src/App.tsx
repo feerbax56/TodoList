@@ -23,7 +23,7 @@ function App() {
     const changeFilter = (filter: FilterValuesType) => {
         setFilter(filter)
     }
-
+    //UI
     const getTasksForTodoList = () => {
         switch (filter) {
             case 'active':
@@ -35,7 +35,7 @@ function App() {
         }
     }
 
-    //UI
+
     return (
         <div className="App">
             <TodoList title={todoListTitle}
