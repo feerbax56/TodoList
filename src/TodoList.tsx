@@ -19,17 +19,17 @@ const TodoList = (props: TodoListPropsType) => {
     const [title, setTitle] = useState<string>('')
     const tasksItems = props.tasks.length
         ? props.tasks.map(task => {
-        return (
-            <li key={task.id}>
-                <input type="checkbox" checked={task.isDone}/>
-                <span>{task.title}</span>
-                <button onClick={() => {
-                    props.removeTask(task.id)
-                }}>del
-                </button>
-            </li>
-        )
-    }) : <span> Tasks list is empty</span>
+            return (
+                <li key={task.id}>
+                    <input type="checkbox" checked={task.isDone}/>
+                    <span>{task.title}</span>
+                    <button onClick={() => {
+                        props.removeTask(task.id)
+                    }}>del
+                    </button>
+                </li>
+            )
+        }) : <span> Tasks list is empty</span>
     const onChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
 
     const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -37,7 +37,11 @@ const TodoList = (props: TodoListPropsType) => {
     }
     const addTask = () => {
         props.addTask(title)
+        setTitle('')
+
     }
+    const handlerCreator = (filter: FilterValuesType) => () => props.changeFilter(filter)
+
     return (
         <div>
             <h3>{props.title}</h3>
@@ -55,9 +59,9 @@ const TodoList = (props: TodoListPropsType) => {
                 {tasksItems}
             </ul>
             <div>
-                <button onClick={() => props.changeFilter('all')}>All</button>
-                <button onClick={() => props.changeFilter('active')}>Active</button>
-                <button onClick={() => props.changeFilter('completed')}>Completed</button>
+                <button onClick={handlerCreator('all')}>All</button>
+                <button onClick={handlerCreator('active')}>Active</button>
+                <button onClick={handlerCreator('completed')}>Completed</button>
             </div>
         </div>
     );
