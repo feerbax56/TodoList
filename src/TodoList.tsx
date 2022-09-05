@@ -45,7 +45,12 @@ const TodoList = (props: TodoListPropsType) => {
 
     const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
-        if (e.key === 'Enter') props.addTask(title)
+        if (e.key === 'Enter' && title.trim() !== '') {
+            props.addTask(title)
+            setTitle('')
+        }if (e.key === 'Enter' && title.trim() === '') {
+            setError('Title is required')
+        }
     }
 
     const addTask = () => {
@@ -79,11 +84,14 @@ const TodoList = (props: TodoListPropsType) => {
             </ul>
             <div>
                 <button className={props.filter === 'all' ? 'btn-active' : ''}
-                        onClick={handlerCreator('all')}>All</button>
+                        onClick={handlerCreator('all')}>All
+                </button>
                 <button className={props.filter === 'active' ? 'btn-active' : ''}
-                        onClick={handlerCreator('active')}>Active</button>
+                        onClick={handlerCreator('active')}>Active
+                </button>
                 <button className={props.filter === 'completed' ? 'btn-active' : ''}
-                        onClick={handlerCreator('completed')}>Completed</button>
+                        onClick={handlerCreator('completed')}>Completed
+                </button>
             </div>
         </div>
     );
