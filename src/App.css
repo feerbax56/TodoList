@@ -14,3 +14,16 @@
 .error-message {
     color: red;
 }
+
+.isDone {
+    color: #212050;
+    font-weight: bold;
+    text-decoration: line-through;
+}
+
+.btn-active {
+    background-color: #daca5c;
+    border-radius: 30%;
+    outline: hotpink;
+    margin: 3px;
+}
