@@ -49,8 +49,9 @@ const TodoList = (props: TodoListPropsType) => {
     }
 
     const addTask = () => {
-        if (title.trim() !== '') {
-            props.addTask(title)
+        const trimmedTitle = title.trim()
+        if (trimmedTitle !== '') {
+            props.addTask(trimmedTitle)
             setTitle('')
         } else {
             setError('Title is required')
