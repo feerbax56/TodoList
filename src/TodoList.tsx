@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, KeyboardEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
 
 
@@ -9,13 +9,15 @@ export type TaskType = {
 }
 
 type TodoListPropsType = {
+    todoListId: string
     title: string
     tasks: Array<TaskType>
     filter: FilterValuesType
-    removeTask: (taskID: string) => void
-    changeFilter: (filter: FilterValuesType) => void
-    addTask: (title: string) => void
-    changeStatus: (taskID: string, isDone: boolean) => void
+    removeTask: (taskID: string, todoListId: string) => void
+    changeFilter: (filter: FilterValuesType, todoListId: string) => void
+    addTask: (title: string, todoListId: string) => void
+    changeStatus: (taskID: string, isDone: boolean, todoListId: string) => void
+    removeTodoList: (todoListId: string) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
@@ -29,13 +31,13 @@ const TodoList = (props: TodoListPropsType) => {
             return (
                 <li key={task.id} className={task.isDone ? 'isDone' : ''}>
                     <input
-                        onChange={(e) => props.changeStatus(task.id, e.currentTarget.checked)}
+                        onChange={(e) => props.changeStatus(task.id, e.currentTarget.checked, props.todoListId)}
                         type="checkbox"
                         checked={task.isDone}
                     />
                     <span>{task.title}</span>
                     <button onClick={() => {
-                        props.removeTask(task.id)
+                        props.removeTask(task.id, props.todoListId)
                     }}>del
                     </button>
                 </li>
@@ -46,9 +48,10 @@ const TodoList = (props: TodoListPropsType) => {
     const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         setError(null)
         if (e.key === 'Enter' && title.trim() !== '') {
-            props.addTask(title)
+            props.addTask(title, props.todoListId)
             setTitle('')
-        }if (e.key === 'Enter' && title.trim() === '') {
+        }
+        if (e.key === 'Enter' && title.trim() === '') {
             setError('Title is required')
         }
     }
@@ -56,17 +59,20 @@ const TodoList = (props: TodoListPropsType) => {
     const addTask = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle !== '') {
-            props.addTask(trimmedTitle)
+            props.addTask(trimmedTitle, props.todoListId)
             setTitle('')
         } else {
             setError('Title is required')
         }
     }
-    const handlerCreator = (filter: FilterValuesType) => () => props.changeFilter(filter)
+    const handlerCreator = (filter: FilterValuesType, todoListId: string) => () => props.changeFilter(filter, todoListId)
 
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>
+                {props.title}
+                <button onClick={()=> props.removeTodoList(props.todoListId)}>x</button>
+            </h3>
             <div>
                 <input
                     value={title}
@@ -84,13 +90,13 @@ const TodoList = (props: TodoListPropsType) => {
             </ul>
             <div>
                 <button className={props.filter === 'all' ? 'btn-active' : ''}
-                        onClick={handlerCreator('all')}>All
+                        onClick={handlerCreator('all', props.todoListId)}>All
                 </button>
                 <button className={props.filter === 'active' ? 'btn-active' : ''}
-                        onClick={handlerCreator('active')}>Active
+                        onClick={handlerCreator('active', props.todoListId)}>Active
                 </button>
                 <button className={props.filter === 'completed' ? 'btn-active' : ''}
-                        onClick={handlerCreator('completed')}>Completed
+                        onClick={handlerCreator('completed', props.todoListId)}>Completed
                 </button>
             </div>
         </div>
