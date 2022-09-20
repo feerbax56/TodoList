@@ -18,7 +18,7 @@ type TaskStateType = {
 }
 
 function App() {
-    //BLL: ;данные и функции обслуживания
+    //BLL: ;данные и функции обслуживания Тест
 
     const todoListId_1 = v1()
     const todoListId_2 = v1()
