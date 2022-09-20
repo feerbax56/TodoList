@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
+import AddItemForm from './AddItemForm';
 
 
 export type TaskType = {
@@ -56,14 +57,8 @@ const TodoList = (props: TodoListPropsType) => {
         }
     }
 
-    const addTask = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle !== '') {
-            props.addTask(trimmedTitle, props.todoListId)
-            setTitle('')
-        } else {
-            setError('Title is required')
-        }
+    const addTask = (title: string) => {
+        props.addTask(title, props.todoListId)
     }
     const handlerCreator = (filter: FilterValuesType, todoListId: string) => () => props.changeFilter(filter, todoListId)
 
@@ -71,20 +66,9 @@ const TodoList = (props: TodoListPropsType) => {
         <div>
             <h3>
                 {props.title}
-                <button onClick={()=> props.removeTodoList(props.todoListId)}>x</button>
+                <button onClick={() => props.removeTodoList(props.todoListId)}>x</button>
             </h3>
-            <div>
-                <input
-                    value={title}
-                    onChange={onChange}
-                    onKeyDown={addTaskOnKeyDown}
-                    className={error ? 'error' : ''}
-                />
-                <button onClick={addTask}
-                >+
-                </button>
-                {error && <div className="error-message">{error}</div>}
-            </div>
+            <AddItemForm addItem={addTask}/>
             <ul>
                 {tasksItems}
             </ul>

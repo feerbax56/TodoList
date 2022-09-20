@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import TodoList, {TaskType} from './TodoList';
 import {v1} from 'uuid';
+import AddItemForm from './AddItemForm';
 // CLI command Line interface
 //GUI  графический интерфейс => CRUD create reed update delete
 
@@ -64,14 +65,15 @@ function App() {
     }
 
     const changeStatus = (taskID: string, isDone: boolean, todoListId: string) => {
-        const todoListsTasks = tasks[todoListId]
-        const updatedTasks = todoListsTasks.map(t => t.id === taskID ? {...t, isDone} : t)
-        const copyTask = {...tasks}
-        copyTask[todoListId] = updatedTasks
-        setTasks(copyTask)
+        // const todoListsTasks = tasks[todoListId]
+        // const updatedTasks = todoListsTasks.map(t => t.id === taskID ? {...t, isDone} : t)
+        // const copyTask = {...tasks}
+        // copyTask[todoListId] = updatedTasks
+        // setTasks(copyTask)
 
-        // setTasks({...tasks, [todoListId] : tasks[todoListId].map(t => t.id === taskID ? {...t, isDone} : t)})
+        setTasks({...tasks, [todoListId]: tasks[todoListId].map(t => t.id === taskID ? {...t, isDone} : t)})
     }
+
 
     const changeFilter = (filter: FilterValuesType, todoListId: string) => {
         setTodolist(todoLists.map(tl => tl.id === todoListId ? {...tl, filter} : tl))
@@ -81,6 +83,12 @@ function App() {
         setTodolist(todoLists.filter(tl => tl.id !== todoListId))
     }
 
+
+    const addTodoList = (title: string) => {
+        const newTodoListId: string = v1()
+        setTodolist([...todoLists, {id: newTodoListId, title, filter: 'all'}])
+        setTasks({...tasks, [newTodoListId]: []})
+    }
 
 //UI
     const getTasksForTodoList = (todoList: TodoListType) => {
@@ -114,6 +122,7 @@ function App() {
 
     return (
         <div className="App">
+            <AddItemForm addItem={addTodoList}/>
             {todoListComponents}
         </div>
     );
