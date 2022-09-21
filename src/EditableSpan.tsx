@@ -1,5 +1,4 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import * as stream from 'stream';
 
 type EditableSpanPropsType = {
     title: string

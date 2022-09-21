@@ -33,7 +33,7 @@ const AddItemForm = (props: AddItemFormPropsType) => {
 
     const userMessage =
         error
-            ? <div style={{color:'red'}}> Title is required </div>
+            ? <div style={{color: 'red'}}> Title is required </div>
             : <div> Please, create list item</div>
 
     const addItem = () => {
