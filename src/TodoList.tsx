@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType} from './App';
 import AddItemForm from './AddItemForm';
+import EditableSpan from './EditableSpan';
 
 
 export type TaskType = {
@@ -19,16 +20,18 @@ type TodoListPropsType = {
     addTask: (title: string, todoListId: string) => void
     changeStatus: (taskID: string, isDone: boolean, todoListId: string) => void
     removeTodoList: (todoListId: string) => void
+    changeTaskTitle: (taskID: string, title: string, todoListId: string) => void
+    changeTodoListTitle: (title: string, todoListId: string) => void
 }
 
 const TodoList = (props: TodoListPropsType) => {
 
-    let [title, setTitle] = useState<string>('')
-    let [error, setError] = useState<string | null>(null)
-
-
     const tasksItems = props.tasks.length
         ? props.tasks.map(task => {
+
+            const changeTaskTitle = (title: string) => {
+                props.changeTaskTitle(task.id, title, props.todoListId)
+            }
             return (
                 <li key={task.id} className={task.isDone ? 'isDone' : ''}>
                     <input
@@ -36,7 +39,7 @@ const TodoList = (props: TodoListPropsType) => {
                         type="checkbox"
                         checked={task.isDone}
                     />
-                    <span>{task.title}</span>
+                    <EditableSpan title={task.title} changeTitle={changeTaskTitle}/>
                     <button onClick={() => {
                         props.removeTask(task.id, props.todoListId)
                     }}>del
@@ -44,28 +47,17 @@ const TodoList = (props: TodoListPropsType) => {
                 </li>
             )
         }) : <span> Tasks list is empty</span>
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-
-    const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === 'Enter' && title.trim() !== '') {
-            props.addTask(title, props.todoListId)
-            setTitle('')
-        }
-        if (e.key === 'Enter' && title.trim() === '') {
-            setError('Title is required')
-        }
-    }
 
     const addTask = (title: string) => {
         props.addTask(title, props.todoListId)
     }
+    const changeTodoListTitle = (title: string) => props.changeTodoListTitle(title, props.todoListId)
     const handlerCreator = (filter: FilterValuesType, todoListId: string) => () => props.changeFilter(filter, todoListId)
 
     return (
         <div>
             <h3>
-                {props.title}
+                <EditableSpan title={props.title} changeTitle={changeTodoListTitle}/>
                 <button onClick={() => props.removeTodoList(props.todoListId)}>x</button>
             </h3>
             <AddItemForm addItem={addTask}/>

@@ -8,29 +8,42 @@ type AddItemFormPropsType = {
 
 const AddItemForm = (props: AddItemFormPropsType) => {
     let [title, setTitle] = useState<string>('')
-    let [error, setError] = useState<string | null>(null)
+    let [error, setError] = useState<boolean>(false)
 
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (error) setError(false)
+        setTitle(e.currentTarget.value)
+    }
+
 
     const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(null)
-        if (e.key === 'Enter' && title.trim() !== '') {
-            props.addItem(title)
-            setTitle('')
-        }
-        if (e.key === 'Enter' && title.trim() === '') {
-            setError('Title is required')
-        }
+        setError(false)
+        if (e.key === 'Enter') addTask()
     }
+
+    const addTask = () => {
+        const trimmedTitle = title.trim()
+        if (trimmedTitle) {
+            props.addItem(trimmedTitle)
+        } else {
+            setError(true)
+        }
+        setTitle('')
+    }
+
+    const userMessage =
+        error
+            ? <div style={{color:'red'}}> Title is required </div>
+            : <div> Please, create list item</div>
 
     const addItem = () => {
         const trimmedTitle = title.trim()
         if (trimmedTitle) {
             props.addItem(trimmedTitle)
-            setTitle('')
         } else {
-            setError('Title is required')
+            setError(true)
         }
+        setTitle('')
     }
 
     return (
@@ -39,12 +52,11 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                 value={title}
                 onChange={onChange}
                 onKeyDown={addTaskOnKeyDown}
-                className={error ? 'error' : ''}
             />
             <button onClick={addItem}
             >+
             </button>
-            {error && <div className="error-message">{error}</div>}
+            {userMessage}
         </div>
     );
 };
