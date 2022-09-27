@@ -1,5 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-
+import PlusOneIcon from '@material-ui/icons/PlusOne';
+import {IconButton} from '@material-ui/core';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -53,9 +54,13 @@ const AddItemForm = (props: AddItemFormPropsType) => {
                 onChange={onChange}
                 onKeyDown={addTaskOnKeyDown}
             />
-            <button onClick={addItem}
-            >+
-            </button>
+            <IconButton color={'inherit'} size={'medium'} onClick={addItem}>
+                <PlusOneIcon/>
+            </IconButton>
+
+            {/*<button onClick={addItem}*/}
+            {/*>+*/}
+            {/*</button>*/}
             {userMessage}
         </div>
     );
