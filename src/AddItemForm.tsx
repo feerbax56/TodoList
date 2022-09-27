@@ -1,6 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import PlusOneIcon from '@material-ui/icons/PlusOne';
-import {IconButton} from '@material-ui/core';
+import {IconButton, TextField} from '@material-ui/core';
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
@@ -32,10 +32,10 @@ const AddItemForm = (props: AddItemFormPropsType) => {
         setTitle('')
     }
 
-    const userMessage =
-        error
-            ? <div style={{color: 'red'}}> Title is required </div>
-            : <div> Please, create list item</div>
+    // const userMessage =
+    //     error
+    //         ? <div style={{color: 'red'}}> Title is required </div>
+    //         : <div> Please, create list item</div>
 
     const addItem = () => {
         const trimmedTitle = title.trim()
@@ -49,11 +49,17 @@ const AddItemForm = (props: AddItemFormPropsType) => {
 
     return (
         <div>
-            <input
+            <TextField
+                label={'Please, create list item'}
+                variant={'outlined'}
+                size={'small'}
+                error={error}
                 value={title}
                 onChange={onChange}
                 onKeyDown={addTaskOnKeyDown}
+                helperText={error && 'Title is required'}
             />
+
             <IconButton color={'inherit'} size={'medium'} onClick={addItem}>
                 <PlusOneIcon/>
             </IconButton>
@@ -61,7 +67,7 @@ const AddItemForm = (props: AddItemFormPropsType) => {
             {/*<button onClick={addItem}*/}
             {/*>+*/}
             {/*</button>*/}
-            {userMessage}
+            {/*{userMessage}*/}
         </div>
     );
 };

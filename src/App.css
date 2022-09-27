@@ -1,20 +1,20 @@
-.App {
-    padding: 30px;
-    display: flex;
-}
+/*.App {*/
+/*    padding: 30px;*/
+/*    display: flex;*/
+/*}*/
 
-.App > div {
-    margin-right: 50px;
-}
+/*.App > div {*/
+/*    margin-right: 50px;*/
+/*}*/
 
-.error {
-    border: hotpink 2px solid ;
-    border-radius: 5px;
-}
+/*.error {*/
+/*    border: hotpink 2px solid ;*/
+/*    border-radius: 5px;*/
+/*}*/
 
-.error-message {
-    color: red;
-}
+/*.error-message {*/
+/*    color: red;*/
+/*}*/
 
 .isDone {
     color: #212050;
@@ -22,10 +22,10 @@
     text-decoration: line-through;
 }
 
-.btn-active {
-    background-color: #daca5c;
-    border-radius: 40%;
-    outline: hotpink;
-    margin: 3px;
-    border: none;
-}
+/*.btn-active {*/
+/*    background-color: #daca5c;*/
+/*    border-radius: 40%;*/
+/*    outline: hotpink;*/
+/*    margin: 3px;*/
+/*    border: none;*/
+/*}*/
