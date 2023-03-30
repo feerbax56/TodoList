@@ -1,75 +1,51 @@
+import TextField from '@mui/material/TextField/TextField';
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import PlusOneIcon from '@material-ui/icons/PlusOne';
-import {IconButton, TextField} from '@material-ui/core';
+import {IconButton} from "@mui/material";
+import {AddBox} from "@mui/icons-material";
 
-type AddItemFormPropsType = {
+
+export type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
+export const AddItemForm = React.memo( (props: AddItemFormPropsType) => {
 
-const AddItemForm = (props: AddItemFormPropsType) => {
-    let [title, setTitle] = useState<string>('')
-    let [error, setError] = useState<boolean>(false)
+    let [title, setTitle] = useState("")
+    let [error, setError] = useState<string | null>(null)
 
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        if (error) setError(false)
+    const addItem = () => {
+        if (title.trim() !== "") {
+            props.addItem(title);
+            setTitle("");
+        } else {
+            setError("Title is required");
+        }
+    }
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
     }
 
-
-    const addTaskOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        setError(false)
-        if (e.key === 'Enter') addTask()
-    }
-
-    const addTask = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addItem(trimmedTitle)
-        } else {
-            setError(true)
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (error !== null) {
+            setError(null);
         }
-        setTitle('')
-    }
-
-    // const userMessage =
-    //     error
-    //         ? <div style={{color: 'red'}}> Title is required </div>
-    //         : <div> Please, create list item</div>
-
-    const addItem = () => {
-        const trimmedTitle = title.trim()
-        if (trimmedTitle) {
-            props.addItem(trimmedTitle)
-        } else {
-            setError(true)
+        if (e.charCode === 13) {
+            addItem();
         }
-        setTitle('')
     }
 
-    return (
-        <div>
-            <TextField
-                label={'Please, create list item'}
-                variant={'outlined'}
-                size={'small'}
-                error={error}
-                value={title}
-                onChange={onChange}
-                onKeyDown={addTaskOnKeyDown}
-                helperText={error && 'Title is required'}
-            />
-
-            <IconButton color={'inherit'} size={'medium'} onClick={addItem}>
-                <PlusOneIcon/>
-            </IconButton>
-
-            {/*<button onClick={addItem}*/}
-            {/*>+*/}
-            {/*</button>*/}
-            {/*{userMessage}*/}
-        </div>
-    );
-};
-
-export default AddItemForm;
+    return <div>
+        <TextField variant="outlined"
+                   error={!!error}
+                   value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   label="Title"
+                   helperText={error}
+        />
+        <IconButton color="primary" onClick={addItem}>
+            <AddBox />
+        </IconButton>
+    </div>
+} );

@@ -1,31 +1,26 @@
-/*.App {*/
-/*    padding: 30px;*/
-/*    display: flex;*/
-/*}*/
-
-/*.App > div {*/
-/*    margin-right: 50px;*/
-/*}*/
-
-/*.error {*/
-/*    border: hotpink 2px solid ;*/
-/*    border-radius: 5px;*/
-/*}*/
-
-/*.error-message {*/
-/*    color: red;*/
-/*}*/
-
-.isDone {
-    color: #212050;
-    font-weight: bold;
-    text-decoration: line-through;
+/*
+.App {
+  padding: 30px;
+  display: flex;
 }
 
-/*.btn-active {*/
-/*    background-color: #daca5c;*/
-/*    border-radius: 40%;*/
-/*    outline: hotpink;*/
-/*    margin: 3px;*/
-/*    border: none;*/
-/*}*/
+.App > div {
+  margin-right: 50px;
+}
+
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: aquamarine;
+}
+
+.is-done {
+  opacity: 0.5;
+}
+*/
