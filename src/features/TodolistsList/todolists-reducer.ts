@@ -35,6 +35,9 @@ const slice = createSlice({
         setTodolistsAC(state, action: PayloadAction<{ todolists: Array<TodolistType> }>) {
             return action.payload.todolists.map(tl => ({...tl, filter: 'all', entityStatus: 'idle'}))
         },
+        clearTodolists: () => {
+            return []
+        },
     }
 })
 
@@ -46,7 +49,8 @@ export const {
     changeTodolistTitleAC,
     changeTodolistFilterAC,
     changeTodolistEntityStatusAC,
-    setTodolistsAC
+    setTodolistsAC,
+    clearTodolists
 } = slice.actions
 
 
@@ -69,7 +73,7 @@ export const removeTodolistTC = (todolistId: string) => {
         dispatch(setAppStatusAC({status: 'loading'}))
         dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'loading'}))
         todolistsAPI.deleteTodolist(todolistId)
-            .then((res) => {
+            .then(() => {
                 dispatch(removeTodolistAC({id: todolistId}))
                 //скажем глобально приложению, что асинхронная операция завершена
                 dispatch(setAppStatusAC({status: 'succeeded'}))
@@ -89,7 +93,7 @@ export const addTodolistTC = (title: string) => {
 export const changeTodolistTitleTC = (id: string, title: string) => {
     return (dispatch: Dispatch) => {
         todolistsAPI.updateTodolist(id, title)
-            .then((res) => {
+            .then(() => {
                 dispatch(changeTodolistTitleAC({id, title}))
             })
     }

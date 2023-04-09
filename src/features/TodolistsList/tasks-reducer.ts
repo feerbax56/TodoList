@@ -1,7 +1,7 @@
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
-import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
+import {setAppStatusAC} from '../../app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer';
@@ -35,6 +35,9 @@ const slice = createSlice({
         },
         setTasksAC(state, action: PayloadAction<{ tasks: Array<TaskType>, todolistId: string }>) {
             state[action.payload.todolistId] = action.payload.tasks
+        },
+        clearTasks: () => {
+            return {}
         }
     },
     extraReducers: (builder) => {
@@ -56,7 +59,8 @@ export const {
     removeTaskAC,
     addTaskAC,
     updateTaskAC,
-    setTasksAC
+    setTasksAC,
+    clearTasks
 } = slice.actions
 
 
@@ -72,7 +76,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 }
 export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
     todolistsAPI.deleteTask(todolistId, taskId)
-        .then(res => {
+        .then(() => {
             const action = removeTaskAC({taskId, todolistId})
             dispatch(action)
         })
